@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Currency Converter</string>
+    <string name="app_name_with_break">Currency <br />Converter</string>
+    <string name="exchange_rate"><u>Mid-market exchange rate at 13:38UTC</u> </string>
+    <string name="get_rate_alert"><u>Get rate alerts straight to your email inbox</u> </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
