@@ -15,7 +15,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/border_toolbar"
             android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -34,7 +34,7 @@
                 android:orientation="horizontal"
                 tools:layout_editor_absoluteX="72dp"
                 tools:layout_editor_absoluteY="13dp"
-                android:paddingEnd="16dp">
+                android:padding="16dp">
 
 
                 <androidx.appcompat.widget.SearchView
@@ -46,7 +46,7 @@
                     android:padding="0dp"
                     app:closeIcon="@drawable/ic_baseline_close"
                     app:defaultQueryHint="Search Course..."
-                    app:queryHint="Search Course..."
+                    app:queryHint="Search Currency..."
                     app:searchHintIcon="@color/colorGrey"
                     app:searchIcon="@drawable/ic_sharp_search" />
 
@@ -66,6 +66,8 @@
             android:id="@+id/recycler_currency"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/progressBar3" />
@@ -74,6 +76,8 @@
             android:id="@+id/no_currency_found"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="visible"

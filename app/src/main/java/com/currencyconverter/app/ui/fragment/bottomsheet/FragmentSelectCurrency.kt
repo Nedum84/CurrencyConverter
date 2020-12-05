@@ -92,7 +92,7 @@ class FragmentSelectCurrency : BaseFragment() {
         return binding.root
     }
     private fun searchCourses(searchView: SearchView = binding.searchCurrency){
-        searchView.queryHint = "Search currency or country..."
+        searchView.queryHint = "Search currency..."
         searchView.setIconifiedByDefault(false)
 
 

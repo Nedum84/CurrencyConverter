@@ -23,13 +23,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="50dp" />
+            app:layout_constraintGuide_begin="76dp" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -39,7 +39,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="24dp"
             android:text="Sign Up"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp"
@@ -52,7 +52,7 @@
             android:id="@+id/app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:text="Currency \nConverter"
             android:textColor="@color/colorAccent"
@@ -66,7 +66,7 @@
             android:id="@+id/imageView2"
             android:layout_width="10dp"
             android:layout_height="10dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/app_name"
             app:layout_constraintStart_toEndOf="@+id/app_name"
             app:srcCompat="@drawable/ic_dot"
@@ -76,9 +76,9 @@
             android:id="@+id/from_currency_input_wrapper"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/border_radius_grey"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -116,9 +116,9 @@
             android:id="@+id/to_currency_input_wrapper"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/border_radius_grey"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -135,6 +135,7 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="Rate"
+                android:enabled="false"
                 android:inputType="number"
                 android:text="@{modelConverter.toAmount}"
                 android:textColorHint="@color/colorGreyDark"
@@ -156,24 +157,33 @@
             android:id="@+id/from_currency_text_wrapper"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/border_radius_only_grey"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             app:layout_constraintEnd_toStartOf="@+id/imageView3"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/to_currency_input_wrapper">
 
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                app:srcCompat="@drawable/ic_dot"
-                tools:ignore="ContentDescription" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:cardCornerRadius="200dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/logo"
+                    imagePath="@{modelConverter.fromCurrency.flag}"
+                    tools:ignore="ContentDescription" />
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:layout_width="0dp"
@@ -213,22 +223,31 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/border_radius_only_grey"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
             app:layout_constraintTop_toBottomOf="@+id/to_currency_input_wrapper">
 
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                app:srcCompat="@drawable/ic_dot"
-                tools:ignore="ContentDescription" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:cardCornerRadius="200dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/logo"
+                    imagePath="@{modelConverter.toCurrency.flag}"
+                    tools:ignore="ContentDescription" />
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:layout_width="0dp"
@@ -253,9 +272,9 @@
             android:id="@+id/convert_btn"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/border_radius_green"
             android:gravity="center"
             android:paddingTop="8dp"
@@ -283,15 +302,16 @@
 
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/textView4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView4"
             app:layout_constraintTop_toTopOf="@+id/textView4"
-            app:srcCompat="@drawable/ic_sharp_info_24"
-            app:tint="@color/colorGreyDark" />
+            app:srcCompat="@drawable/rote_info_icon"
+            android:background="@drawable/circle_grey"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"

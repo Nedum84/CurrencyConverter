@@ -5,6 +5,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.currencyconverter.app.R
+import java.io.InputStream
 
 object ClassImageBinding {
 
@@ -17,10 +18,10 @@ object ClassImageBinding {
                 .load(imgUrlString)
                 .apply(
                     RequestOptions()
-                        .placeholder(R.drawable.ic_dot)//default image on loading
-                        .error(R.drawable.ic_dot)//without n/w, this img shows
-//                        .dontAnimate()
-//                        .fitCenter()
+                        .placeholder(R.drawable.ic_launcher_background)//default image on loading
+                        .error(R.drawable.ic_launcher_background)//without n/w, this img shows
+                        .dontAnimate()
+                        .fitCenter()
                 )
                 .thumbnail(.1f)
                 .into(view)

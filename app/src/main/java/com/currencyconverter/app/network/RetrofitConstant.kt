@@ -30,5 +30,11 @@ class RetrofitConstant {
 //            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+        val retrofit_CountryFlag: Retrofit = Retrofit.Builder()
+            .baseUrl(UrlHolder.URL_BASE_COUNTRY_FLAG)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 }

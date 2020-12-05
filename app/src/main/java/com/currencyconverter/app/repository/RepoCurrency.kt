@@ -78,11 +78,14 @@ class RepoCurrency(private val database: DatabaseRoom) {
             }
     }
 
-    fun addCurrencyToDb(currency: MutableList<Currency>){
+    fun addCurrencyToDb(currencyList: MutableList<Currency>){
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                database.currencyDao.upSert(currency)
+                database.currencyDao.upSert(currencyList)
             } catch (e: Exception) {e.printStackTrace()}
         }
+
+        //Update flags
+        RepoCountryFlag(database, currencyList)
     }
 }
