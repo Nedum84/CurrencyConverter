@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ import com.currencyconverter.app.adapter.SymbolClickListener
 import com.currencyconverter.app.databinding.FragmentSelectCurrencyBinding
 import com.currencyconverter.app.viewmodel.ModelCurrency
 import com.currencyconverter.app.ui.fragment.BaseFragment
+import com.currencyconverter.app.utils.ClassAlertDialog
 
 class FragmentSelectCurrency : BaseFragment() {
     lateinit var binding:FragmentSelectCurrencyBinding
@@ -33,17 +35,18 @@ class FragmentSelectCurrency : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val viewModelFactory = ModelCurrency.Factory(requireActivity().application)
+        val viewModelFactory = ModelCurrency.Factory(requireActivity().application, viewLifecycleOwner)
         modelCurrency = requireActivity().run{
             ViewModelProvider(this, viewModelFactory).get(ModelCurrency::class.java)
         }
 
+//        RELOADING CURRENCY LIST WHEN SEARCH VALUE CHANGES
         modelCurrency.queryString.observe(viewLifecycleOwner, { query->
             query?.getContentIfNotHandled()?.let {
-                modelCurrency.currency(it).observe(viewLifecycleOwner, Observer {
-                    it?.let {
+                modelCurrency.currency(it).observe(viewLifecycleOwner, Observer {list->
+                    list?.let {
                         ADAPTER.list = it
-                        checkEmpty()
+                        if (it.isEmpty()) checkEmptyList()
                     }
                 })
             }
@@ -58,12 +61,13 @@ class FragmentSelectCurrency : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_currency, container, false)
 
-        val viewModelFactory = ModelCurrency.Factory(requireActivity().application)
+        val viewModelFactory = ModelCurrency.Factory(requireActivity().application, viewLifecycleOwner)
         modelCurrency = ViewModelProvider(this, viewModelFactory).get(ModelCurrency::class.java)
         binding.apply {
             lifecycleOwner = this@FragmentSelectCurrency
         }
 
+        //ADDING DATA TO ADAPTER
         ADAPTER = AdapterCurrency(SymbolClickListener {
             modelCurrency.setCurSymbol(it)
             dialog?.dismiss()
@@ -75,8 +79,8 @@ class FragmentSelectCurrency : BaseFragment() {
             itemAnimator = DefaultItemAnimator()
         }
 
-        modelCurrency.feedBack.observe(viewLifecycleOwner, Observer {
-            checkEmpty(true)
+        modelCurrency.feedBack.observe(viewLifecycleOwner, {
+            checkEmptyList(true)
         })
 
 
@@ -91,16 +95,19 @@ class FragmentSelectCurrency : BaseFragment() {
 
         return binding.root
     }
+    
     private fun searchCourses(searchView: SearchView = binding.searchCurrency){
         searchView.queryHint = "Search currency..."
         searchView.setIconifiedByDefault(false)
 
 
+        //CHANGE THE COLOR OF THE SEARCH VIEW INPUT
         val searchText = searchView.findViewById(androidx.appcompat.R.id.search_src_text) as TextView
         searchText.setTextColor(Color.BLACK)
         searchText.setHintTextColor(Color.BLACK)
 
 
+        //UPDATE LIVE DATA SEARCH QUERY
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 modelCurrency.setSearchQuery(query!!)
@@ -114,10 +121,12 @@ class FragmentSelectCurrency : BaseFragment() {
         })
     }
 
-    private fun checkEmpty(is_network_error:Boolean = false){
+    private fun checkEmptyList(is_network_error:Boolean = false){
+        binding.noCurrencyFound.visibility = View.VISIBLE
         if (is_network_error){
             binding.noCurrencyFound.visibility = if (ADAPTER.itemCount==0) View.VISIBLE else View.GONE
             binding.refreshTitle.text = "No internet connection"
+            ClassAlertDialog(thisContext).toast("Currency couldn't be loaded(NETWORK ERROR)")
         }else{
             binding.refreshTitle.text = "No currency found"
             binding.noCurrencyFound.visibility = if (ADAPTER.itemCount==0) View.VISIBLE else View.GONE

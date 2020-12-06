@@ -5,7 +5,7 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.currencyconverter.app.R
-import java.io.InputStream
+import java.util.*
 
 object ClassImageBinding {
 
@@ -14,17 +14,25 @@ object ClassImageBinding {
     @BindingAdapter("imagePath")
     fun bindImageFromUrl(view: ImageView, imgUrlString: String?  = ""){
         if (!imgUrlString.isNullOrEmpty()){
-            Glide.with(view.context)
-                .load(imgUrlString)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.ic_launcher_background)//default image on loading
-                        .error(R.drawable.ic_launcher_background)//without n/w, this img shows
-                        .dontAnimate()
-                        .fitCenter()
-                )
-                .thumbnail(.1f)
-                .into(view)
+            try {
+                Glide.with(view.context)
+    //                .load(imgUrlString)
+                    .load("https://flagcdn.com/h60/${imgUrlString.toLowerCase(Locale.getDefault())}.png")
+                    .apply(
+                        RequestOptions()
+                            .placeholder(R.drawable.ic_launcher_background)//default image on loading
+                            .error(R.drawable.ic_launcher_background)//without n/w, this img shows
+                            .dontAnimate()
+                            .centerCrop()
+                    )
+                    .thumbnail(.1f)
+                    .into(view)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Glide.with(view.context)
+                    .load(R.drawable.ic_launcher_background)
+                    .into(view)
+            }
         }
     }
 

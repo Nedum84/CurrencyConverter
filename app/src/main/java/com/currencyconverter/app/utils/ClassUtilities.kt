@@ -19,23 +19,20 @@ class ClassUtilities() {
     @SuppressLint("SourceLockedOrientationActivity")
     fun lockScreen(context: Context?){
         //lock screen
-        val orientation = context!!.resources.configuration.orientation//activity!!.requestedOrientation(to get 10 more values)
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            // code for portrait mode
-            try {
-                (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            } catch (e: Exception) {}
-        } else {
-            // code for landscape mode
-            try {
-                (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-            } catch (e: Exception) {}
-        }
-        //lock screen
-//        OR
-//        activity!!.requestedOrientation = orientation
-        //OR
-//        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+        (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+//        val orientation = context!!.resources.configuration.orientation//activity!!.requestedOrientation(to get 10 more values)
+//        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            // code for portrait mode
+//            try {
+//                (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+//            } catch (e: Exception) {}
+//        } else {
+//            // code for landscape mode
+//            try {
+//                (context as Activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+//            } catch (e: Exception) {}
+//        }
     }
     fun unlockScreen(context: Context?){
         try {

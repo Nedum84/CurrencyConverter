@@ -14,8 +14,13 @@ import com.currencyconverter.app.R
 import com.currencyconverter.app.databinding.ActivityMainBinding
 import com.currencyconverter.app.ui.fragment.bottomsheet.FragmentSelectCurrency
 import com.currencyconverter.app.utils.ClassAlertDialog
+import com.currencyconverter.app.utils.ClassUtilities
 import com.currencyconverter.app.viewmodel.ModelConverter
 import com.currencyconverter.app.viewmodel.ModelCurrency
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -39,9 +44,12 @@ class MainActivity : AppCompatActivity() {
             modelConverter = modelConvert
         }
 
+        //CHANGE STATUS BAR TEXT COLOR
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
+        //LOCK SCREEN TO ONLY PORTRAIT
+        ClassUtilities().lockScreen(this);
 
 
         initViewModel()
@@ -50,7 +58,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViewModel() {
 
-        val viewModelFactory = ModelCurrency.Factory(application)
+//        CURRENCY VIEWMODEL INIT
+        val viewModelFactory = ModelCurrency.Factory(application, this)
         modelCurrency = ViewModelProvider(this, viewModelFactory).get(ModelCurrency::class.java)
         modelCurrency.curCurrency.observe(this, {
             it?.getContentIfNotHandled().let { c ->
@@ -62,19 +71,32 @@ class MainActivity : AppCompatActivity() {
                         modelConvert.setToCurrency(c!!)
                     }
                 }
-                modelConvert.convert()
+                //Checking if user has already entered a value. Make it unity if user hasn't added something
+                val fromAmount = binding.fromCurrencyInput.text.toString().trim()
+                if(fromAmount.isEmpty())
+                    modelConvert.setFromAmount("1")
+                else
+                    convert()
             }
         })
 
+        //OBSERVE CHANGES IN THE "FROM" INPUT FIELDS FOR CONVERSION
         modelConvert.fromAmount.observe(this, {
             it?.let {
-                modelConvert.convert()
+                convert()
             }
         })
     }
 
+    private fun convert(){
+        CoroutineScope(Dispatchers.Main).launch {
+            modelConvert.convert()
+        }
+    }
+
     private fun clickListeners() {
 
+        //SETTING THE CURRENT CLICK CURRENCY CONVERSION BUTTON 
         binding.fromCurrencyTextWrapper.setOnClickListener{
             activeCurrency = ActiveCurrency.FROM_CURRENCY
             FragmentSelectCurrency().apply {
@@ -91,6 +113,7 @@ class MainActivity : AppCompatActivity() {
             convertCurrency()
         }
 
+        //CONVERT CURRENCY FOR EVERY TEXT ENTERED BY THE USER
         binding.fromCurrencyInput.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -114,7 +137,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
-
+//CHECK THE CURRENT CURRENCY TO LISTEN TO
 enum class ActiveCurrency {
     FROM_CURRENCY,
     TO_CURRENCY

@@ -1,26 +1,20 @@
 package com.currencyconverter.app.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.currencyconverter.app.model.Currency
 import com.currencyconverter.app.room.DatabaseRoom
 import com.currencyconverter.app.network.RetrofitConstant
-import com.currencyconverter.app.network.CurrencyService
-import com.currencyconverter.app.network.ServerResponse
-import com.currencyconverter.app.utils.ClassAlertDialog
-import com.currencyconverter.app.utils.UrlHolder.ACCESS_KEY
 import com.google.gson.JsonElement
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.*
+
 
 class RepoCountryFlag(private val database: DatabaseRoom, val currencyList: MutableList<Currency>) {
 
@@ -33,7 +27,7 @@ class RepoCountryFlag(private val database: DatabaseRoom, val currencyList: Muta
     suspend fun getFlag(){
         val courseService = RetrofitConstant.retrofit_CountryFlag
             .create(FlagService::class.java)
-            .getFlags(fields = "flag;currencies")
+            .getFlags(fields = "flag;currencies;alpha2Code")
 
 
             try {
@@ -53,6 +47,7 @@ class RepoCountryFlag(private val database: DatabaseRoom, val currencyList: Muta
                                 for(i in 0 until respArray.size()){
                                     val obj = respArray[i].asJsonObject
                                     val flag = obj["flag"].asString
+                                    val alpha2Code = obj["alpha2Code"].asString
                                     val currencySymbolObj = obj["currencies"].asJsonArray[0].asJsonObject
                                     if (!currencySymbolObj.keySet().contains("code")) continue;
 
@@ -60,7 +55,8 @@ class RepoCountryFlag(private val database: DatabaseRoom, val currencyList: Muta
                                     val currency = currencyList.filter { it.symbol==currencySymbol }
                                     if (currency.isNotEmpty()){
                                         val row = currency[0]
-                                        row.flag = flag
+//                                        row.flag = flag
+                                        row.flag = alpha2Code
                                         newCurrencyList.add(row)
                                     }
                                 }

@@ -9,7 +9,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         tools:context=".ui.fragment.bottomsheet.FragmentSelectCurrency">
 
         <androidx.appcompat.widget.Toolbar
@@ -57,7 +56,8 @@
                     android:padding="4dp"
                     android:paddingStart="6dp"
                     android:paddingEnd="6dp"
-                    app:srcCompat="@drawable/ic_baseline_close_24"
+                    app:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    app:tint="@color/colorBlack"
                     tools:ignore="ContentDescription" />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -70,21 +70,21 @@
             android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/progressBar3" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <LinearLayout
             android:id="@+id/no_currency_found"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="240dp"
+            android:layout_height="400dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:gravity="center"
+            android:visibility="gone"
             android:orientation="vertical"
-            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+            app:layout_constraintTop_toBottomOf="@+id/recycler_currency">
 
             <TextView
                 android:id="@+id/refresh_title"
@@ -103,17 +103,6 @@
                 android:text="Refresh"
                 android:textColor="@color/white" />
         </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/progressBar3"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

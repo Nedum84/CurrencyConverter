@@ -22,7 +22,7 @@ class RepoCurrency(private val database: DatabaseRoom) {
 
 
 //    val symbols : LiveData<List<Symbols>> = database.symbolsDao.getAll()
-    fun courses(searchQuery: String?=""):LiveData<List<Currency>>{
+    fun getCurrencies(searchQuery: String?=""):LiveData<List<Currency>>{
 
         return if (searchQuery.isNullOrEmpty())
             database.currencyDao.getAll()
@@ -31,9 +31,7 @@ class RepoCurrency(private val database: DatabaseRoom) {
     }
 
     val feedBack:LiveData<String> get() = _feedBack
-    private val _feedBack  = MutableLiveData<String>().apply {
-        value = "success"
-    }
+    private val _feedBack  = MutableLiveData<String>()
 
     suspend fun getCurrency(){
         val courseService = RetrofitConstant.retrofit
@@ -47,7 +45,8 @@ class RepoCurrency(private val database: DatabaseRoom) {
 
                 courseService.enqueue(object  : Callback<ServerResponse> {
                     override fun onFailure(call: Call<ServerResponse>, t: Throwable) {
-                        _feedBack.postValue("network_error"); t.printStackTrace()}
+                        _feedBack.postValue("network_error")
+                        t.printStackTrace()}
 
                     override fun onResponse(call: Call<ServerResponse>, response: Response<ServerResponse>) {
                         if (!response.isSuccessful){
@@ -73,8 +72,8 @@ class RepoCurrency(private val database: DatabaseRoom) {
                     }
                 })
             } catch (e: Exception) {
-                e.printStackTrace()
                 _feedBack.postValue("network_error")
+                e.printStackTrace()
             }
     }
 
@@ -85,7 +84,11 @@ class RepoCurrency(private val database: DatabaseRoom) {
             } catch (e: Exception) {e.printStackTrace()}
         }
 
-        //Update flags
-        RepoCountryFlag(database, currencyList)
+        //Update flags if they have not been updated
+        val noOfAddedFlags = currencyList.filter { it.flag.isNotEmpty() }
+        if(noOfAddedFlags.size < 5)
+            RepoCountryFlag(database, currencyList)
+
+
     }
 }

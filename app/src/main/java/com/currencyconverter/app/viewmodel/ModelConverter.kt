@@ -58,12 +58,12 @@ class ModelConverter(application: Application) : AndroidViewModel(application) {
 
 
     init {
-        setFromCurrency(Currency("USD", "United States Dollar"))
-        setToCurrency(Currency("NGN", "Nigerian Naira"))
+        setFromCurrency(Currency("USD", "United States Dollar", "us"))
+        setToCurrency(Currency("NGN", "Nigerian Naira","ng"))
     }
 
 
-    fun convert() {
+    suspend fun convert() {
 //        getRateHistory()
         val convert = Convert(fromCurrency.value!!.symbol, toCurrency.value!!.symbol, fromAmount.value!!.toFloat())
         val convertService = RetrofitConstant.retrofit
@@ -121,9 +121,8 @@ class ModelConverter(application: Application) : AndroidViewModel(application) {
     }
 
 
-    /**
-     * Factory for constructing DevByteViewModel with parameter
-     */
+
+
     class Factory(private val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(ModelConverter::class.java)) {
